@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { siteConfig } from "@/config/site";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function Contact() {
   const ref = useRef<HTMLDivElement>(null);
@@ -76,10 +76,8 @@ export function Contact() {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.75, duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
       >
-        <MagneticButton
-          as="a"
+        <Link
           href={siteConfig.contact.ctaHref}
-          strength={0.3}
           className="group inline-flex items-center gap-4 bg-accent text-bg px-8 py-5 rounded-full font-sans font-bold text-[14px] uppercase tracking-[0.15em] hover:bg-fg transition-colors duration-300"
         >
           {siteConfig.contact.cta}
@@ -94,7 +92,7 @@ export function Contact() {
               />
             </svg>
           </span>
-        </MagneticButton>
+        </Link>
       </motion.div>
 
       <motion.p

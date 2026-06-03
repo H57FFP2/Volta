@@ -37,25 +37,48 @@ interface HeroProps {
 export function Hero({ isLoaded }: HeroProps) {
   const show = isLoaded;
 
+  // Fond léger par défaut (sûr). On n'active le WebGL des beams QUE sur desktop
+  // performant : jamais sur mobile/tactile/reduced-motion → pas de crash.
+  const [useBeams, setUseBeams] = useState(false);
+  useEffect(() => {
+    const okSize = window.matchMedia("(min-width: 768px)").matches;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (okSize && finePointer && !reduced) setUseBeams(true);
+  }, []);
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-bg">
-
+      {/* Fond */}
       <div className="absolute inset-0 z-0">
-        <Beams
-          beamWidth={2.5}
-          beamHeight={18}
-          beamNumber={15}
-          lightColor="#B8FF2E"
-          speed={2.2}
-          noiseIntensity={2}
-          scale={0.15}
-          rotation={43}
-          backgroundColor="#0f1511"
-        />
+        {useBeams ? (
+          <Beams
+            beamWidth={2.5}
+            beamHeight={18}
+            beamNumber={15}
+            lightColor="#B8FF2E"
+            speed={2.2}
+            noiseIntensity={2}
+            scale={0.15}
+            rotation={43}
+            backgroundColor="#0f1511"
+          />
+        ) : (
+          // Fond statique léger (mobile) — dégradés lime sur vert forêt
+          <div
+            className="w-full h-full"
+            style={{
+              background:
+                "radial-gradient(ellipse 90% 60% at 50% -10%, rgba(184,255,46,0.12), transparent 60%), radial-gradient(ellipse 70% 50% at 80% 20%, rgba(255,74,40,0.06), transparent 55%), var(--bg)",
+            }}
+          />
+        )}
       </div>
 
+      {/* Voile pour la lisibilité */}
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-bg via-bg/30 to-bg/50 pointer-events-none" />
 
+      {/* Contenu */}
       <div className="relative z-10 flex min-h-screen items-center">
         <div className="mx-auto max-w-5xl px-6 lg:px-8 w-full">
           <div className="mx-auto max-w-3xl text-center">

@@ -21,7 +21,12 @@ export function BackToTop() {
     const rect = e.currentTarget.getBoundingClientRect();
     setCircle({ cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 });
 
-    setTimeout(() => window.scrollTo(0, 0), 480);
+    setTimeout(() => {
+      const lenis = window.__lenis;
+      if (lenis) lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo(0, 0);
+      window.scrollTo(0, 0);
+    }, 480);
     setTimeout(() => setCircle(null), 1150);
   }, []);
 

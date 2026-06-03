@@ -66,6 +66,8 @@ export function Manifesto() {
   const lastPtrX     = useRef(0);
   const lastPtrTime  = useRef(0);
   const resumeTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchStartY  = useRef(0);
+  const touchAxis    = useRef<"pending" | "horizontal" | "vertical">("pending");
 
   const targetX = useRef(0);
   const x       = useMotionValue(0);
@@ -128,9 +130,47 @@ export function Manifesto() {
     }
   });
 
-  function handleWindowMove(e: MouseEvent)  { moveDrag(e.clientX); }
-  function handleWindowTouch(e: TouchEvent) { e.preventDefault(); moveDrag(e.touches[0].clientX); }
-  function handleWindowUp()                 { endDrag(); }
+  function handleWindowMove(e: MouseEvent) { moveDrag(e.clientX); }
+  function handleWindowUp()                { endDrag(); }
+
+  // Tactile : on décide de l'axe au premier mouvement
+  function handleTouchMove(e: TouchEvent) {
+    const cx = e.touches[0].clientX;
+    const cy = e.touches[0].clientY;
+
+    if (touchAxis.current === "pending") {
+      const dx = Math.abs(cx - dragStartX.current);
+      const dy = Math.abs(cy - touchStartY.current);
+      if (dx < 8 && dy < 8) return; // seuil : pas encore décidé
+
+      if (dy > dx) {
+        // Vertical → on laisse la page scroller
+        touchAxis.current = "vertical";
+        phase.current = "auto";
+        window.removeEventListener("touchmove", handleTouchMove);
+        window.removeEventListener("touchend", handleTouchEnd);
+        return;
+      }
+      // Horizontal → on drague les avis
+      touchAxis.current = "horizontal";
+    }
+
+    if (touchAxis.current === "horizontal") {
+      e.preventDefault();
+      moveDrag(cx);
+    }
+  }
+
+  function handleTouchEnd() {
+    window.removeEventListener("touchmove", handleTouchMove);
+    window.removeEventListener("touchend", handleTouchEnd);
+    if (touchAxis.current === "horizontal") {
+      endDrag();
+    } else if (phase.current === "dragging") {
+      phase.current = "auto";
+    }
+    touchAxis.current = "pending";
+  }
 
   const moveDrag = useCallback((clientX: number) => {
     if (phase.current !== "dragging") return;
@@ -147,10 +187,9 @@ export function Manifesto() {
     phase.current = "decelerating";
     window.removeEventListener("mousemove", handleWindowMove);
     window.removeEventListener("mouseup",   handleWindowUp);
-    window.removeEventListener("touchmove", handleWindowTouch);
-    window.removeEventListener("touchend",  handleWindowUp);
   }, []);
 
+  // Souris : drague immédiatement (pas de conflit de scroll)
   const startDrag = (clientX: number) => {
     if (resumeTimer.current) clearTimeout(resumeTimer.current);
     phase.current       = "dragging";
@@ -162,15 +201,29 @@ export function Manifesto() {
     lastPtrTime.current = performance.now();
     window.addEventListener("mousemove", handleWindowMove);
     window.addEventListener("mouseup",   handleWindowUp);
-    window.addEventListener("touchmove", handleWindowTouch, { passive: false });
-    window.addEventListener("touchend",  handleWindowUp);
+  };
+
+  // Tactile : on arme la détection d'axe sans encore draguer
+  const startTouch = (touch: React.Touch) => {
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    touchAxis.current   = "pending";
+    velocity.current    = 0;
+    dragStartX.current  = touch.clientX;
+    touchStartY.current = touch.clientY;
+    dragStartMX.current = x.get();
+    targetX.current     = x.get();
+    lastPtrX.current    = touch.clientX;
+    lastPtrTime.current = performance.now();
+    phase.current       = "dragging"; // met l'auto en pause le temps de décider
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
   };
 
   useEffect(() => () => {
     window.removeEventListener("mousemove", handleWindowMove);
     window.removeEventListener("mouseup",   handleWindowUp);
-    window.removeEventListener("touchmove", handleWindowTouch);
-    window.removeEventListener("touchend",  handleWindowUp);
+    window.removeEventListener("touchmove", handleTouchMove);
+    window.removeEventListener("touchend",  handleTouchEnd);
     if (resumeTimer.current) clearTimeout(resumeTimer.current);
   }, []);
 
@@ -190,8 +243,9 @@ export function Manifesto() {
 
         <div
           className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
+          style={{ touchAction: "pan-y" }}
           onMouseDown={(e) => startDrag(e.clientX)}
-          onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+          onTouchStart={(e) => startTouch(e.touches[0])}
         >
           <motion.div ref={trackRef} style={{ x }} className="flex gap-5 px-5 w-max">
             {doubled.map((review, i) => (

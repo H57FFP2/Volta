@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { BackToTop } from "@/components/layout/BackToTop";
 
@@ -18,13 +18,6 @@ export function Footer() {
             </span>
           </div>
 
-          <a
-            href="/contact"
-            className="group inline-flex items-center gap-3 rounded-full bg-accent text-bg px-7 py-3.5 font-sans font-bold text-[13px] uppercase tracking-[0.15em] hover:bg-fg transition-colors duration-300"
-          >
-            Faire un devis
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10 py-10">
