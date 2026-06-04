@@ -35,6 +35,7 @@ export function Contact() {
         aria-hidden="true"
       />
 
+      <div className="relative z-10">
       <motion.p
         className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted-fg mb-10"
         initial={{ opacity: 0, x: -20 }}
@@ -110,6 +111,7 @@ export function Contact() {
           {siteConfig.studio.email}
         </a>
       </motion.p>
+      </div>
     </section>
   );
 }

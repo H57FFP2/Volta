@@ -20,10 +20,11 @@ export function Collaboration() {
           className="relative rounded-[2.5rem] overflow-hidden border border-white/10"
           style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.4)" }}
         >
-          {/* Couche frost */}
+          {/* Couche translucide (sans backdrop-filter pour éviter le bug de
+              superposition au-dessus des overlays fixes) */}
           <div
-            className="absolute inset-0 z-0 rounded-[2.5rem] backdrop-blur-sm"
-            style={{ background: "rgba(255,255,255,0.03)" }}
+            className="absolute inset-0 z-0 rounded-[2.5rem]"
+            style={{ background: "rgba(15,21,17,0.35)" }}
           />
           {/* Reflets glossy des bords */}
           <div
@@ -39,7 +40,7 @@ export function Collaboration() {
             href="https://www.vokai.ca/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative z-10 flex flex-col items-center text-center px-8 py-14 md:px-16 md:py-20"
+            className="group relative z-10 flex flex-col items-center text-center px-5 py-12 md:px-16 md:py-20"
           >
             <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent mb-3 inline-flex items-center gap-1.5">
               {t.collab.eyebrow}
@@ -49,22 +50,22 @@ export function Collaboration() {
               {t.collab.title}
             </h2>
 
-            <div className="flex items-center gap-8 sm:gap-14">
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-14 max-w-full">
               {/* Logo partenaire VOKAI */}
               <img
                 src="/Image_20260527_161138_911.png"
                 alt="VOKAI"
-                className="h-56 sm:h-80 w-auto"
+                className="h-32 sm:h-80 w-auto max-w-full"
               />
               {/* X */}
-              <span className="font-sans font-black text-accent leading-none select-none text-[clamp(5rem,12vw,10rem)]">
+              <span className="font-sans font-black text-accent leading-none select-none text-[clamp(3rem,12vw,10rem)]">
                 ×
               </span>
               {/* Notre logo */}
               <img
                 src="/VOLTAWEB/VOLTAWHITE2.png"
                 alt={siteConfig.studio.name}
-                className="h-48 sm:h-72 w-auto"
+                className="h-28 sm:h-72 w-auto max-w-full"
               />
             </div>
 

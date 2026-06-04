@@ -78,10 +78,10 @@ export function LanguageToggle() {
       <AnimatePresence>
         {transition && (
           <motion.div
-            className="fixed inset-0 z-[9990] flex items-center justify-center overflow-hidden pointer-events-none"
-            style={{ backgroundColor: "var(--accent)" }}
+            className="fixed top-0 left-0 w-screen z-[9990] flex items-center justify-center overflow-hidden pointer-events-none"
+            style={{ backgroundColor: "var(--accent)", height: "160vh" }}
             initial={{ clipPath: `circle(0px at ${transition.cx}px ${transition.cy}px)` }}
-            animate={{ clipPath: `circle(170vmax at ${transition.cx}px ${transition.cy}px)` }}
+            animate={{ clipPath: `circle(260vmax at ${transition.cx}px ${transition.cy}px)` }}
             exit={{
               clipPath: `circle(0px at ${transition.cx}px ${transition.cy}px)`,
               transition: { duration: 0.5, ease: EASE_EXPO },

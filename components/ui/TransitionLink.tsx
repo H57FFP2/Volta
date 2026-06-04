@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,8 @@ export function TransitionLink({
   children,
 }: TransitionLinkProps) {
   const [circle, setCircle] = useState<{ cx: number; cy: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -58,35 +61,39 @@ export function TransitionLink({
         {children}
       </a>
 
-      <AnimatePresence>
-        {circle && (
-          <motion.div
-            className="fixed inset-0 z-[9990] flex items-center justify-center overflow-hidden pointer-events-none"
-            style={{ backgroundColor: color }}
-            initial={{ clipPath: `circle(0px at ${circle.cx}px ${circle.cy}px)` }}
-            animate={{ clipPath: `circle(170vmax at ${circle.cx}px ${circle.cy}px)` }}
-            exit={{
-              clipPath: `circle(0px at ${circle.cx}px ${circle.cy}px)`,
-              transition: { duration: 0.5, ease: EASE_EXPO },
-            }}
-            transition={{ duration: 0.7, ease: EASE_EXPO }}
-          >
-            <motion.span
-              className="font-sans font-black uppercase tracking-[0.08em] select-none"
-              style={{ color: "#0f1511", fontSize: "clamp(3rem, 10vw, 8rem)" }}
-              initial={{ opacity: 0, scale: 0.82 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.22, duration: 0.42, ease: EASE_OUT }}
-            >
-              {label ??
-                (sectionId === "works" ? "Travaux" :
-                 sectionId === "services" ? "Services" :
-                 sectionId === "contact" ? "Contact" :
-                 sectionId === "process" ? "Processus" : sectionId)}
-            </motion.span>
-          </motion.div>
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {circle && (
+              <motion.div
+                className="fixed top-0 left-0 w-screen z-[99999] flex items-center justify-center overflow-hidden pointer-events-none"
+                style={{ backgroundColor: color, height: "160vh" }}
+                initial={{ clipPath: `circle(0px at ${circle.cx}px ${circle.cy}px)` }}
+                animate={{ clipPath: `circle(260vmax at ${circle.cx}px ${circle.cy}px)` }}
+                exit={{
+                  clipPath: `circle(0px at ${circle.cx}px ${circle.cy}px)`,
+                  transition: { duration: 0.5, ease: EASE_EXPO },
+                }}
+                transition={{ duration: 0.7, ease: EASE_EXPO }}
+              >
+                <motion.span
+                  className="font-sans font-black uppercase tracking-[0.08em] select-none"
+                  style={{ color: "#0f1511", fontSize: "clamp(3rem, 10vw, 8rem)" }}
+                  initial={{ opacity: 0, scale: 0.82 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.22, duration: 0.42, ease: EASE_OUT }}
+                >
+                  {label ??
+                    (sectionId === "works" ? "Travaux" :
+                     sectionId === "services" ? "Services" :
+                     sectionId === "contact" ? "Contact" :
+                     sectionId === "process" ? "Processus" : sectionId)}
+                </motion.span>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 }
