@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { siteConfig } from "@/config/site";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { useLang } from "@/lib/language-context";
 
 export function Services() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { t } = useLang();
 
   return (
     <section id="services" className="px-6 md:px-10 py-24 md:py-36 border-t border-[var(--border-color)]">
@@ -17,17 +18,17 @@ export function Services() {
           as="h2"
           className="font-sans font-black text-[clamp(2.5rem,7vw,6rem)] leading-none text-fg max-w-lg"
         >
-          Ce que nous faisons
+          {t.services.title}
         </TextReveal>
         <ScrollReveal direction="left" delay={0.2}>
           <p className="font-sans text-[clamp(1.25rem,2.2vw,2rem)] text-muted-fg max-w-xl leading-snug md:text-right">
-            Vous êtes maître de vos propres décisions.
+            {t.services.note}
           </p>
         </ScrollReveal>
       </div>
 
       <ul className="divide-y divide-[var(--border-color)]">
-        {siteConfig.services.map((service, i) => (
+        {t.services.items.map((service, i) => (
           <li key={i}>
             <button
               className="w-full flex items-center justify-between py-7 md:py-9 group text-left"
@@ -37,7 +38,7 @@ export function Services() {
 
               <div className="flex items-baseline gap-6 md:gap-10">
                 <span className="font-mono text-[11px] tracking-[0.2em] text-muted-fg shrink-0">
-                  {service.index}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
                   className="font-sans font-black text-[clamp(1.6rem,4vw,3.5rem)] leading-none text-fg transition-colors duration-200 group-hover:text-accent"

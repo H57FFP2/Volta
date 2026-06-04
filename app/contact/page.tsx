@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Mail, Phone, ArrowLeft, Check, Loader2, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { useLang } from "@/lib/language-context";
 import { getSupabase } from "@/lib/supabase";
 import { Footer } from "@/components/layout/Footer";
 
@@ -18,19 +19,16 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16.6 5.82a4.28 4.28 0 0 1-1.05-2.82h-3.1v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 1 1 .73-5.07V9.66a5.66 5.66 0 0 0-.73-.05A5.69 5.69 0 1 0 15.46 15V8.9a7.3 7.3 0 0 0 4.27 1.37V7.16a4.28 4.28 0 0 1-3.13-1.34z" />
+    </svg>
+  );
+}
+
 const EASE = [0.33, 1, 0.68, 1] as const;
-
 type Status = "idle" | "loading" | "success" | "error";
-
-const BUSINESS_TYPES = [
-  "Startup",
-  "PME",
-  "E-commerce",
-  "Agence",
-  "Indépendant / Freelance",
-  "Grande entreprise",
-  "Autre",
-];
 
 function isValidPhone(raw: string): boolean {
   const cleaned = raw.replace(/[\s.\-()/]/g, "");
@@ -38,13 +36,14 @@ function isValidPhone(raw: string): boolean {
 }
 
 export default function ContactPage() {
+  const { t } = useLang();
+  const c = t.contactPage;
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
     const data = new FormData(form);
     const payload = {
@@ -58,18 +57,17 @@ export default function ContactPage() {
     };
 
     if (payload.phone && !isValidPhone(payload.phone)) {
-      setPhoneError("Numéro invalide. Format international attendu, ex : +1 514 555 0123");
+      setPhoneError(c.phoneError);
       return;
     }
     setPhoneError("");
-
     setStatus("loading");
     setErrorMsg("");
 
     const supabase = getSupabase();
     if (!supabase) {
       setStatus("error");
-      setErrorMsg("Le formulaire n'est pas encore configuré (Supabase).");
+      setErrorMsg(c.notConfigured);
       return;
     }
 
@@ -77,7 +75,7 @@ export default function ContactPage() {
     if (error) {
       console.error("Supabase insert error:", error);
       setStatus("error");
-      setErrorMsg(`Erreur : ${error.message} (code: ${error.code ?? "?"})`);
+      setErrorMsg(c.genericError);
       return;
     }
 
@@ -86,9 +84,10 @@ export default function ContactPage() {
   };
 
   const channels = [
-    { icon: <Mail className="w-5 h-5" />, label: "Email", value: siteConfig.studio.email, href: `mailto:${siteConfig.studio.email}` },
-    { icon: <Phone className="w-5 h-5" />, label: "Téléphone", value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, "")}` },
-    { icon: <InstagramIcon className="w-5 h-5" />, label: "Instagram", value: siteConfig.contact.instagram.handle, href: siteConfig.contact.instagram.url },
+    { icon: <Mail className="w-5 h-5" />, label: c.channels.email, value: siteConfig.studio.email, href: `mailto:${siteConfig.studio.email}`, external: false },
+    { icon: <Phone className="w-5 h-5" />, label: c.channels.phone, value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, "")}`, external: false },
+    { icon: <InstagramIcon className="w-5 h-5" />, label: c.channels.instagram, value: siteConfig.contact.instagram.handle, href: siteConfig.contact.instagram.url, external: true },
+    { icon: <TikTokIcon className="w-5 h-5" />, label: "TikTok", value: siteConfig.contact.tiktok.handle, href: siteConfig.contact.tiktok.url, external: true },
   ];
 
   return (
@@ -99,110 +98,75 @@ export default function ContactPage() {
           className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-fg hover:text-fg transition-colors duration-200 mb-16"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          {c.back}
         </Link>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-20">
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent mb-6">
-              Parlons de votre projet
-            </p>
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent mb-6">{c.eyebrow}</p>
             <h1 className="font-sans font-black text-[clamp(2.4rem,6vw,4.5rem)] leading-[0.95] tracking-tight text-fg mb-6">
-              {siteConfig.contact.headline}
+              {c.headline}
             </h1>
-            <p className="font-sans text-[1.05rem] text-muted-fg leading-relaxed max-w-md mb-12">
-              {siteConfig.contact.subline}
-            </p>
+            <p className="font-sans text-[1.05rem] text-muted-fg leading-relaxed max-w-md mb-12">{c.subline}</p>
 
             <div className="space-y-3">
-              {channels.map((c) => (
+              {channels.map((ch) => (
                 <a
-                  key={c.label}
-                  href={c.href}
-                  target={c.label === "Instagram" ? "_blank" : undefined}
+                  key={ch.label}
+                  href={ch.href}
+                  target={ch.external ? "_blank" : undefined}
                   rel="noopener noreferrer"
                   className="group flex items-center gap-4 rounded-xl border border-[var(--border-color)] bg-muted/40 px-5 py-4 transition-colors duration-200 hover:border-accent"
                 >
-                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-bg text-accent shrink-0">
-                    {c.icon}
-                  </span>
+                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-bg text-accent shrink-0">{ch.icon}</span>
                   <span className="flex flex-col">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-fg">{c.label}</span>
-                    <span className="font-sans font-semibold text-fg group-hover:text-accent transition-colors duration-200">{c.value}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-fg">{ch.label}</span>
+                    <span className="font-sans font-semibold text-fg group-hover:text-accent transition-colors duration-200">{ch.value}</span>
                   </span>
                 </a>
               ))}
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}>
             {status === "success" ? (
               <div className="flex flex-col items-center justify-center text-center min-h-[420px] gap-5 rounded-2xl border border-[var(--border-color)] bg-muted/40 p-10">
                 <span className="flex items-center justify-center w-16 h-16 rounded-full bg-accent text-bg">
                   <Check className="w-8 h-8" />
                 </span>
-                <h2 className="font-sans font-black text-2xl text-fg">Demande envoyée</h2>
-                <p className="font-sans text-muted-fg max-w-xs">
-                  Merci ! On revient vers vous sous 24h avec un premier retour.
-                </p>
-                <button
-                  onClick={() => setStatus("idle")}
-                  className="mt-2 font-mono text-[11px] uppercase tracking-widest text-accent hover:text-fg transition-colors"
-                >
-                  Envoyer une autre demande
+                <h2 className="font-sans font-black text-2xl text-fg">{c.successTitle}</h2>
+                <p className="font-sans text-muted-fg max-w-xs">{c.successText}</p>
+                <button onClick={() => setStatus("idle")} className="mt-2 font-mono text-[11px] uppercase tracking-widest text-accent hover:text-fg transition-colors">
+                  {c.successAgain}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col">
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 border-b border-[var(--border-color)] pb-8">
-                  <LineField num="01" label="Prénom" name="firstname" type="text" placeholder="Jean" required />
-                  <LineField num="02" label="Nom" name="name" type="text" placeholder="Dupont" required />
+                  <LineField num="01" label={c.fields.firstname} name="firstname" type="text" placeholder="Jean" required />
+                  <LineField num="02" label={c.fields.name} name="name" type="text" placeholder="Dupont" required />
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 border-b border-[var(--border-color)] py-8">
-                  <LineField num="03" label="Email" name="email" type="email" placeholder="jean@entreprise.com" required />
-                  <LineField
-                    num="04"
-                    label="Téléphone (optionnel)"
-                    name="phone"
-                    type="tel"
-                    placeholder="+1 514 555 0123"
-                    error={phoneError}
-                    onChange={() => phoneError && setPhoneError("")}
-                  />
+                  <LineField num="03" label={c.fields.email} name="email" type="email" placeholder="jean@entreprise.com" required />
+                  <LineField num="04" label={c.fields.phone} name="phone" type="tel" placeholder="+1 514 555 0123" error={phoneError} onChange={() => phoneError && setPhoneError("")} />
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 border-b border-[var(--border-color)] py-8">
-                  <LineField num="05" label="Nom d'entreprise" name="company" type="text" placeholder="Studio Acme" />
-                  <LineSelect num="06" label="Type d'entreprise" name="business_type" options={BUSINESS_TYPES} />
+                  <LineField num="05" label={c.fields.company} name="company" type="text" placeholder="Studio Acme" />
+                  <LineSelect num="06" label={c.fields.businessType} name="business_type" options={c.businessTypes} placeholder={c.selectPlaceholder} />
                 </div>
-
                 <div className="py-8">
                   <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-fg mb-3">
-                    <span className="text-accent">07</span> Votre projet
+                    <span className="text-accent">07</span> {c.fields.project}
                   </span>
                   <textarea
                     name="message"
                     required
                     rows={4}
-                    placeholder="Décrivez votre projet, vos objectifs, votre échéance..."
                     className="w-full resize-none bg-transparent border-b border-[var(--border-color)] pb-3 font-sans text-[clamp(1.1rem,2vw,1.4rem)] text-fg placeholder:text-muted-fg/40 outline-none focus:border-accent transition-colors duration-200"
                   />
                 </div>
 
-                {status === "error" && (
-                  <p className="font-sans text-[13px] text-[var(--accent-warm)] mb-4">{errorMsg}</p>
-                )}
+                {status === "error" && <p className="font-sans text-[13px] text-[var(--accent-warm)] mb-4">{errorMsg}</p>}
 
                 <button
                   type="submit"
@@ -212,11 +176,11 @@ export default function ContactPage() {
                   {status === "loading" ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Envoi...
+                      {c.sending}
                     </>
                   ) : (
                     <>
-                      Envoyer la demande
+                      {c.submit}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -232,23 +196,10 @@ export default function ContactPage() {
 }
 
 function LineField({
-  num,
-  label,
-  name,
-  type,
-  placeholder,
-  required,
-  error,
-  onChange,
+  num, label, name, type, placeholder, required, error, onChange,
 }: {
-  num: string;
-  label: string;
-  name: string;
-  type: string;
-  placeholder?: string;
-  required?: boolean;
-  error?: string;
-  onChange?: () => void;
+  num: string; label: string; name: string; type: string;
+  placeholder?: string; required?: boolean; error?: string; onChange?: () => void;
 }) {
   return (
     <label className="flex flex-col">
@@ -271,15 +222,9 @@ function LineField({
 }
 
 function LineSelect({
-  num,
-  label,
-  name,
-  options,
+  num, label, name, options, placeholder,
 }: {
-  num: string;
-  label: string;
-  name: string;
-  options: string[];
+  num: string; label: string; name: string; options: string[]; placeholder: string;
 }) {
   return (
     <label className="flex flex-col">
@@ -291,13 +236,9 @@ function LineSelect({
         defaultValue=""
         className="bg-transparent border-b border-[var(--border-color)] pb-2 font-sans text-[clamp(1.1rem,2vw,1.4rem)] text-fg outline-none transition-colors duration-200 focus:border-accent cursor-pointer [&>option]:bg-bg [&>option]:text-fg"
       >
-        <option value="" disabled className="text-muted-fg">
-          Sélectionner...
-        </option>
+        <option value="" disabled className="text-muted-fg">{placeholder}</option>
         {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
+          <option key={o} value={o}>{o}</option>
         ))}
       </select>
     </label>

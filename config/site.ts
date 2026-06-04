@@ -1,11 +1,11 @@
 
 export const siteConfig = {
   studio: {
-    name: "VOLTAWEB",
+    name: "VAULTAWEB",
     tagline: "Construisez votre identité",
     description:
       "Studio de création web haut de gamme. Nous transformons vos ambitions en références digitales.",
-    email: "contact@voltaweb-studio.fr",
+    email: "vaultaweb@gmail.com",
     location: "Montréal, Canada",
     year: "2026",
   },
@@ -117,10 +117,14 @@ export const siteConfig = {
     subline: "Décrivez votre projet. On répond sous 24h, avec les prix les plus compétitifs du marché.",
     cta: "Faire un devis gratuit",
     ctaHref: "/contact",
-    phone: "+1 514 000 0000",
+    phone: "+1 514 980 0235",
     instagram: {
-      handle: "@voltaweb.studio",
-      url: "https://instagram.com/voltaweb.studio",
+      handle: "@vaultaweb",
+      url: "https://www.instagram.com/vaultaweb?igsh=OGMxdWR4OHNvcmdj",
+    },
+    tiktok: {
+      handle: "@vaultaweb",
+      url: "https://www.tiktok.com/@vaultaweb?_r=1&_t=ZS-96uXRCpjZrg",
     },
   },
 

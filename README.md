@@ -1,4 +1,4 @@
-# VOLTAWEB Studio
+# VAULTAWEB Studio
 
 Site vitrine premium — Next.js 15 + Tailwind CSS + Framer Motion + Lenis.
 

@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { Star } from "lucide-react";
+import { useLang } from "@/lib/language-context";
 
 const SPEED_NORMAL = 0.45;
 const SPEED_SLOW   = 0.08;
@@ -20,20 +21,9 @@ const GRADIENT_TOP = `linear-gradient(in srgb-linear to bottom, ${
   STOPS.map(([p,a]) => `rgba(${BG},${a}) ${p}%`).join(", ")
 })`;
 
-const REVIEWS = [
-  { quote: "Un site qui a transformé notre acquisition client. L'équipe a su capter les valeurs de notre marque avec une précision rare.", author: "Sarah M.",   stars: 4.7 },
-  { quote: "Processus impeccable, résultat au-delà des attentes. On a levé notre Série A deux mois après le lancement du site.",       author: "Thomas K.",  stars: 5 },
-  { quote: "La meilleure décision de l'année. Notre trafic a été multiplié par 6 en six mois. L'impact est mesurable et vrai.",        author: "Léa R.",     stars: 5 },
-  { quote: "Une équipe qui comprend vraiment les enjeux business. Notre taux de conversion a doublé dès les deux mois.",             author: "Marc D.",    stars: 5 },
-  { quote: "Design exceptionnel, délais respectés, communication parfaite. Exactement ce qu'on cherchait depuis longtemps.",          author: "Julie F.",   stars: 5 },
-  { quote: "Le résultat dépasse tout ce qu'on imaginait. On recommande !",    author: "Antoine P.", stars: 5 },
-  { quote: "Chaque détail pensé, chaque animation justifiée. Un travail de précision qu'on ne trouve nulle part ailleurs.",            author: "Camille B.", stars: 4.8 },
-  { quote: "Investissement rentabilisé en trois semaines. Notre pipeline a explosé après le lancement. Je recommande sans hésiter.",   author: "Romain V.",  stars: 5 },
-  { quote: "Rare de trouver une agence qui allie autant de talent créatif et de rigueur technique. Un vrai partenaire long terme.",    author: "Inès C.",    stars: 5 },
-  { quote: "Notre ancienne agence prenait 6 mois pour livrer moitié moins bien. VOLTAWEB a livré en 4 semaines. Le jour et la nuit.",    author: "Kevin L.",   stars:4.6 },
-] as const;
+type Review = { quote: string; author: string; stars: number };
 
-function ReviewCard({ review }: { review: typeof REVIEWS[number] }) {
+function ReviewCard({ review }: { review: Review }) {
   return (
     <div className="shrink-0 w-[80vw] max-w-[400px] sm:w-[400px] flex flex-col gap-5 rounded-2xl p-6 sm:p-8 border"
       style={{ backgroundColor:"var(--bg)", borderColor:"var(--border-color)", boxShadow:"0 4px 32px rgba(0,0,0,0.35)" }}>
@@ -56,6 +46,7 @@ function ReviewCard({ review }: { review: typeof REVIEWS[number] }) {
 type Phase = "auto" | "dragging" | "decelerating" | "slow";
 
 export function Manifesto() {
+  const { t, lang } = useLang();
   const trackRef     = useRef<HTMLDivElement>(null);
   const contentWidth = useRef(0);
 
@@ -74,7 +65,7 @@ export function Manifesto() {
 
   useEffect(() => {
     if (trackRef.current) contentWidth.current = trackRef.current.scrollWidth / 2;
-  }, []);
+  }, [lang]);
 
   const wrap = (val: number) => {
     const w = contentWidth.current;
@@ -227,7 +218,7 @@ export function Manifesto() {
     if (resumeTimer.current) clearTimeout(resumeTimer.current);
   }, []);
 
-  const doubled = [...REVIEWS, ...REVIEWS];
+  const doubled = [...t.reviews.items, ...t.reviews.items];
 
   return (
     <section className="relative bg-accent py-28 md:py-40 overflow-hidden" id="manifesto">
@@ -238,7 +229,7 @@ export function Manifesto() {
 
       <div className="relative z-20">
         <p className="font-mono text-[14px] md:text-[16px] uppercase tracking-[0.3em] text-black mb-14 text-center">
-          Ce qu&apos;ils disent
+          {t.reviews.eyebrow}
         </p>
 
         <div
@@ -255,7 +246,7 @@ export function Manifesto() {
         </div>
 
         <p className="mt-14 font-sans font-bold text-black text-3xl md:text-5xl text-center">
-          Des clients satisfaits...
+          {t.reviews.closing}
         </p>
       </div>
     </section>

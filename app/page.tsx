@@ -10,12 +10,14 @@ import { Works } from "@/components/sections/Works";
 import { Services } from "@/components/sections/Services";
 import { Process } from "@/components/sections/Process";
 import { Contact } from "@/components/sections/Contact";
+import { Collaboration } from "@/components/sections/Collaboration";
 import { Marquee } from "@/components/ui/Marquee";
 import { SectionFade } from "@/components/ui/SectionFade";
-import { siteConfig } from "@/config/site";
+import { useLang } from "@/lib/language-context";
 
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const { t } = useLang();
 
   return (
     <>
@@ -36,11 +38,7 @@ export default function HomePage() {
           <Works />
 
           <div className="py-5 border-y border-[var(--border-color)] bg-muted overflow-hidden">
-            <Marquee
-              items={siteConfig.marquee.items}
-              speed="normal"
-              inverted
-            />
+            <Marquee items={t.marquee} speed="normal" inverted />
           </div>
 
           <Services />
@@ -48,6 +46,8 @@ export default function HomePage() {
           <Process />
 
           <Contact />
+
+          <Collaboration />
         </main>
 
         <Footer />

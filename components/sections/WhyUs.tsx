@@ -1,65 +1,67 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 import { StackingCards, type StackReason } from "@/components/ui/stacking-card";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { useLang } from "@/lib/language-context";
 
-const REASONS: StackReason[] = [
-  {
-    index: "01",
-    title: "Sur-mesure, jamais de template",
-    description:
-      "Chaque site est conçu de zéro autour de votre marque. Pas de thème recyclé, pas de mise en page prévisible. Une pièce unique, pensée pour vous démarquer.",
-    color: "#0c160f",
-    textColor: "#ede8da",
-  },
-  {
-    index: "02",
-    title: "Performance et conversion",
-    description:
-      "Un site rapide, fluide et optimisé. On ne se contente pas du beau : chaque choix sert vos objectifs et transforme vos visiteurs en clients.",
-    color: "#142a1c",
-    textColor: "#ede8da",
-  },
-  {
-    index: "03",
-    title: "Accompagnement réel",
-    description:
-      "Avant, pendant et après le lancement. On reste disponibles, réactifs et transparents. Vous n'êtes jamais seul face à votre projet.",
-    color: "#1d3e28",
-    textColor: "#ede8da",
-  },
-  {
-    index: "04",
-    title: "Les prix les plus compétitifs",
-    description:
-      "Une qualité premium au meilleur tarif du marché. On vous offre le travail d'un grand studio sans le prix d'un grand studio. Le meilleur rapport qualité-prix, point.",
-    color: "#2a5638",
-    textColor: "#ede8da",
-  },
-  {
-    index: "05",
-    title: "Un design qui marque",
-    description:
-      "Une esthétique premium, des animations soignées, une identité forte. Un site dont on se souvient et qui inspire confiance dès la première seconde.",
-    color: "#3a7a4c",
-    textColor: "#ede8da",
-  },
-];
+const COLORS = ["#16321f", "#20422a", "#2a5436", "#356643", "#427e52"];
 
 export function WhyUs() {
-  return (
-    <section id="why-us" className="relative bg-bg">
+  const { t } = useLang();
+  const sectionRef = useRef<HTMLElement>(null);
+  // Actif tant qu'une partie de la section est visible (tout le scroll des cartes)
+  const inView = useInView(sectionRef, { margin: "-20% 0px -20% 0px" });
 
+  const reasons: StackReason[] = t.why.reasons.map((r, i) => ({
+    index: r.index,
+    title: r.title,
+    description: r.description,
+    color: COLORS[i % COLORS.length],
+    textColor: "#ede8da",
+  }));
+
+  return (
+    <section id="why-us" ref={sectionRef} className="relative bg-bg">
       <div className="px-6 md:px-10 pt-24 md:pt-36 pb-8 md:pb-16">
         <TextReveal
           as="h2"
           className="font-sans font-black text-[clamp(2.5rem,7vw,6rem)] leading-none text-fg"
         >
-          Pourquoi nous choisir
+          {t.why.title}
         </TextReveal>
       </div>
 
-      <StackingCards reasons={REASONS} />
+      <StackingCards reasons={reasons} />
+
+      {/* Indicateur de scroll — fixé à droite pendant tout le défilement des cartes */}
+      <AnimatePresence>
+        {inView && (
+          <motion.div
+            className="fixed right-5 md:right-8 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col items-center gap-3 pointer-events-none"
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 12 }}
+            transition={{ duration: 0.4 }}
+          >
+            <span
+              className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted-fg"
+              style={{ writingMode: "vertical-rl" }}
+            >
+              {t.why.scroll}
+            </span>
+            <motion.span
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              className="text-accent"
+            >
+              <ArrowDown className="w-5 h-5" />
+            </motion.span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

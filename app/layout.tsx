@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import { LenisProvider } from "@/lib/lenis-provider";
+import { LanguageProvider } from "@/lib/language-context";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -24,6 +26,11 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.studio.name}`,
   },
   description: siteConfig.studio.description,
+  icons: {
+    icon: "/VOLTAWEB/VOLTAGREEN2.png",
+    shortcut: "/VOLTAWEB/VOLTAGREEN2.png",
+    apple: "/VOLTAWEB/VOLTAGREEN2.png",
+  },
   openGraph: {
     title: siteConfig.studio.name,
     description: siteConfig.studio.description,
@@ -40,9 +47,12 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-bg text-fg font-sans">
-        <LenisProvider>
-          {children}
-        </LenisProvider>
+        <LanguageProvider>
+          <LanguageToggle />
+          <LenisProvider>
+            {children}
+          </LenisProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

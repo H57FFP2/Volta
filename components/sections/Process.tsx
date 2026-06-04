@@ -1,21 +1,22 @@
 "use client";
 
-import { siteConfig } from "@/config/site";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { useLang } from "@/lib/language-context";
 
 export function Process() {
+  const { t } = useLang();
   return (
     <section className="px-6 md:px-10 py-24 md:py-36 bg-muted" id="process">
       <TextReveal
         as="h2"
         className="font-sans font-black text-[clamp(2.5rem,7vw,6rem)] leading-none text-fg mb-16 md:mb-24"
       >
-        Notre processus
+        {t.process.title}
       </TextReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 lg:gap-20">
-        {siteConfig.process.map((step, i) => (
+        {t.process.steps.map((step, i) => (
           <ScrollReveal key={i} delay={i * 0.15} direction="up">
             <article className="relative">
 
@@ -27,7 +28,7 @@ export function Process() {
                   WebkitTextStroke: "1px var(--border-color)",
                 }}
               >
-                {step.step}
+                {String(i + 1).padStart(2, "0")}
               </p>
 
               <div className="w-8 h-px bg-accent mb-5" />

@@ -9,6 +9,7 @@ import {
   useMotionTemplate,
 } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { useLang } from "@/lib/language-context";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TextReveal } from "@/components/ui/TextReveal";
 
@@ -47,8 +48,10 @@ const SPRING_CFG  = { stiffness: 280, damping: 26, mass: 0.5 };
 
 function WorkCard({
   project,
+  category,
 }: {
   project: (typeof siteConfig.works)[0];
+  category: string;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -136,7 +139,7 @@ function WorkCard({
             {project.title}
           </h3>
           <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-bg/60 mt-1">
-            {project.category} · {project.year}
+            {category} · {project.year}
           </p>
         </motion.div>
       </motion.article>
@@ -145,6 +148,7 @@ function WorkCard({
 }
 
 export function Works() {
+  const { t } = useLang();
   return (
     <section id="works" className="px-6 md:px-10 py-24 md:py-36">
       <div className="flex items-end justify-between mb-16 md:mb-20">
@@ -152,14 +156,14 @@ export function Works() {
           as="h2"
           className="font-sans font-black text-[clamp(2.5rem,7vw,6rem)] leading-none text-fg"
         >
-          Travaux sélectionnés
+          {t.works.title}
         </TextReveal>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
         {siteConfig.works.map((project, i) => (
           <ScrollReveal key={project.id} delay={i * 0.1} direction="up">
-            <WorkCard project={project} />
+            <WorkCard project={project} category={t.works.items[i]?.category ?? project.category} />
           </ScrollReveal>
         ))}
       </div>

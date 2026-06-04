@@ -4,13 +4,14 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { useLang } from "@/lib/language-context";
 
 export function Contact() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useLang();
 
-  const headline = siteConfig.contact.headline;
-  const words = headline.split(" ");
+  const words = t.contact.headline.split(" ");
 
   return (
     <section
@@ -40,7 +41,7 @@ export function Contact() {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.6 }}
       >
-        Travailler ensemble →
+        {t.contact.eyebrow}
       </motion.p>
 
       <h2 className="font-sans font-black text-[clamp(2.2rem,7vw,7rem)] leading-[1.0] text-fg max-w-4xl mb-8">
@@ -68,7 +69,7 @@ export function Contact() {
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.6, duration: 0.7 }}
       >
-        {siteConfig.contact.subline}
+        {t.contact.subline}
       </motion.p>
 
       <motion.div
@@ -80,7 +81,7 @@ export function Contact() {
           href={siteConfig.contact.ctaHref}
           className="group inline-flex items-center gap-4 bg-accent text-bg px-8 py-5 rounded-full font-sans font-bold text-[14px] uppercase tracking-[0.15em] hover:bg-fg transition-colors duration-300"
         >
-          {siteConfig.contact.cta}
+          {t.contact.cta}
           <span className="w-5 h-5 rounded-full bg-bg/20 flex items-center justify-center group-hover:translate-x-1 transition-transform duration-200">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
               <path
@@ -101,7 +102,7 @@ export function Contact() {
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.9 }}
       >
-        ou directement :{" "}
+        {t.contact.orDirectly}{" "}
         <a
           href={`mailto:${siteConfig.studio.email}`}
           className="text-fg hover:text-accent transition-colors duration-200 underline underline-offset-4"

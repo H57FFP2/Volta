@@ -52,12 +52,13 @@ export function StackingCard({
         className="relative flex flex-col justify-between h-[520px] md:h-[600px] w-full max-w-6xl rounded-3xl p-10 md:p-16 origin-top overflow-hidden"
       >
 
-        <span
-          className="pointer-events-none absolute -right-4 -bottom-10 font-sans font-black leading-none select-none"
-          style={{ fontSize: "clamp(10rem,22vw,18rem)", opacity: 0.12 }}
-        >
-          {index}
-        </span>
+        <img
+          src="/VOLTAWEB/VOLTAWHITE2.png"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute -right-6 -bottom-8 w-[clamp(16rem,34vw,28rem)] h-auto select-none"
+          style={{ opacity: 0.06 }}
+        />
 
         <div className="relative z-10 flex items-center gap-4">
           <span className="font-mono text-[12px] tracking-[0.3em]">{index}</span>

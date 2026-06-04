@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, animate } from "framer-motion";
 import { Star } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { useLang } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { TransitionLink } from "@/components/ui/TransitionLink";
 import { LiquidGlassLayers, GlassFilter } from "@/components/ui/liquid-glass-button";
@@ -36,6 +37,7 @@ interface HeroProps {
 
 export function Hero({ isLoaded }: HeroProps) {
   const show = isLoaded;
+  const { t } = useLang();
 
   // Fond léger par défaut (sûr). On n'active le WebGL des beams QUE sur desktop
   // performant : jamais sur mobile/tactile/reduced-motion → pas de crash.
@@ -90,7 +92,7 @@ export function Hero({ isLoaded }: HeroProps) {
               transition={{ duration: 0.6, ease: EASE }}
             >
               <Star className="mr-2 h-3.5 w-3.5 text-accent" fill="currentColor" stroke="none" />
-              Studio créatif · {siteConfig.studio.location}
+              {t.hero.badge} · {siteConfig.studio.location}
             </motion.div>
 
             <motion.h1
@@ -99,7 +101,7 @@ export function Hero({ isLoaded }: HeroProps) {
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 0.08 }}
             >
-              {siteConfig.studio.tagline}
+              {t.hero.tagline}
             </motion.h1>
 
             <motion.p
@@ -108,7 +110,7 @@ export function Hero({ isLoaded }: HeroProps) {
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease: EASE, delay: 0.16 }}
             >
-              {siteConfig.studio.description}
+              {t.hero.description}
             </motion.p>
 
             <motion.div
@@ -119,7 +121,7 @@ export function Hero({ isLoaded }: HeroProps) {
             >
               <Button asChild size="lg">
                 <TransitionLink href="#works" color="var(--accent)">
-                  Voir nos travaux
+                  {t.hero.seeWorks}
                   <svg className="ml-2" width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -127,11 +129,12 @@ export function Hero({ isLoaded }: HeroProps) {
               </Button>
               <TransitionLink
                 href="#contact"
-                color="var(--accent-warm)"
+                color="var(--accent)"
+                label={t.hero.quoteLabel}
                 className="relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full px-8 font-sans font-bold text-[13px] uppercase tracking-[0.15em] text-fg transition-transform duration-300 hover:scale-105"
               >
                 <LiquidGlassLayers />
-                <span className="relative z-10">Faire un devis gratuit</span>
+                <span className="relative z-10">{t.hero.quote}</span>
                 <GlassFilter />
               </TransitionLink>
             </motion.div>
@@ -142,11 +145,7 @@ export function Hero({ isLoaded }: HeroProps) {
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease: EASE, delay: 0.36 }}
             >
-              {[
-                { value: 400, label: "Projets réalisés" },
-                { value: 220, label: "Refontes" },
-                { value: 130, label: "Automatisations" },
-              ].map((stat) => (
+              {t.hero.stats.map((stat) => (
                 <div
                   key={stat.label}
                   className="rounded-2xl border border-[var(--border-color)] bg-bg/40 backdrop-blur-md px-3 py-5 sm:px-5 sm:py-6 flex flex-col items-center gap-1"

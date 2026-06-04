@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 interface TransitionLinkProps {
   href: string;
   color?: string;
+  label?: string; // texte affiché dans le circle-expand (sinon dérivé du href)
   className?: string;
   children: React.ReactNode;
 }
@@ -17,6 +18,7 @@ const EASE_OUT  = [0.33, 1, 0.68, 1] as const;
 export function TransitionLink({
   href,
   color = "var(--accent)",
+  label,
   className,
   children,
 }: TransitionLinkProps) {
@@ -76,10 +78,11 @@ export function TransitionLink({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.22, duration: 0.42, ease: EASE_OUT }}
             >
-              {sectionId === "works" ? "Travaux" :
-               sectionId === "services" ? "Services" :
-               sectionId === "contact" ? "Contact" :
-               sectionId === "process" ? "Processus" : sectionId}
+              {label ??
+                (sectionId === "works" ? "Travaux" :
+                 sectionId === "services" ? "Services" :
+                 sectionId === "contact" ? "Contact" :
+                 sectionId === "process" ? "Processus" : sectionId)}
             </motion.span>
           </motion.div>
         )}
