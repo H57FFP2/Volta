@@ -17,6 +17,9 @@ yarn-error.log*
 # bot Discord (projet séparé, non déployé avec le site)
 /discord-bot
 
+# outil de captures (dev only)
+/screencomp
+
 # divers
 .DS_Store
 *.pem

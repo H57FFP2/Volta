@@ -48,7 +48,7 @@ export function Hero({ isLoaded }: HeroProps) {
   }, []);
 
   return (
-    <section className="relative min-h-[78vh] w-full overflow-hidden bg-bg">
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-bg">
       {/* Fond */}
       <div className="absolute inset-0 z-0">
         {useBeams ? (
@@ -79,12 +79,12 @@ export function Hero({ isLoaded }: HeroProps) {
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-bg via-bg/30 to-bg/50 pointer-events-none" />
 
       {/* Contenu */}
-      <div className="relative z-10 flex min-h-[78vh] items-center py-20">
+      <div className="relative z-10 flex min-h-[100svh] items-center py-24">
         <div className="mx-auto max-w-5xl px-6 lg:px-8 w-full">
           <div className="mx-auto max-w-4xl text-center">
 
             <motion.h1
-              className="mb-8 font-sans font-black text-[clamp(2.4rem,6vw,5rem)] leading-[0.95] tracking-tight text-fg text-balance"
+              className="mb-8 font-sans font-black text-[clamp(2.8rem,8vw,7rem)] leading-[0.95] tracking-tight text-fg text-balance"
               initial={{ opacity: 0, y: 28 }}
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 0.08 }}
