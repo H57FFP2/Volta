@@ -3,6 +3,7 @@ import { Outfit, JetBrains_Mono } from "next/font/google";
 import { LenisProvider } from "@/lib/lenis-provider";
 import { LanguageProvider } from "@/lib/language-context";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
+import { VisitTracker } from "@/components/VisitTracker";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className="bg-bg text-fg font-sans">
         <LanguageProvider>
           <LanguageToggle />
+          <VisitTracker />
           <LenisProvider>
             {children}
           </LenisProvider>

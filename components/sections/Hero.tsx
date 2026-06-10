@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, animate } from "framer-motion";
-import { Star } from "lucide-react";
-import { siteConfig } from "@/config/site";
 import { useLang } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { TransitionLink } from "@/components/ui/TransitionLink";
@@ -83,20 +81,10 @@ export function Hero({ isLoaded }: HeroProps) {
       {/* Contenu */}
       <div className="relative z-10 flex min-h-screen items-center">
         <div className="mx-auto max-w-5xl px-6 lg:px-8 w-full">
-          <div className="mx-auto max-w-3xl text-center">
-
-            <motion.div
-              className="mb-8 inline-flex items-center rounded-full bg-fg/5 backdrop-blur-xl border border-[var(--border-color)] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-fg/80"
-              initial={{ opacity: 0, y: 12 }}
-              animate={show ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              <Star className="mr-2 h-3.5 w-3.5 text-accent" fill="currentColor" stroke="none" />
-              {t.hero.badge} · {siteConfig.studio.location}
-            </motion.div>
+          <div className="mx-auto max-w-4xl text-center">
 
             <motion.h1
-              className="mb-6 font-sans font-black text-[clamp(2.6rem,7vw,6rem)] leading-[0.95] tracking-tight text-fg text-balance"
+              className="mb-8 font-sans font-black text-[clamp(3.25rem,11vw,10.5rem)] leading-[0.92] tracking-tight text-fg text-balance"
               initial={{ opacity: 0, y: 28 }}
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 0.08 }}
@@ -119,10 +107,10 @@ export function Hero({ isLoaded }: HeroProps) {
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, ease: EASE, delay: 0.26 }}
             >
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="h-16 px-12 text-[15px]">
                 <TransitionLink href="#works" color="var(--accent)">
                   {t.hero.seeWorks}
-                  <svg className="ml-2" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <svg className="ml-2" width="14" height="14" viewBox="0 0 12 12" fill="none">
                     <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </TransitionLink>
@@ -131,7 +119,7 @@ export function Hero({ isLoaded }: HeroProps) {
                 href="#contact"
                 color="var(--accent)"
                 label={t.hero.quoteLabel}
-                className="relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full px-8 font-sans font-bold text-[13px] uppercase tracking-[0.15em] text-fg transition-transform duration-300 hover:scale-105"
+                className="relative inline-flex h-16 items-center justify-center overflow-hidden rounded-full px-12 font-sans font-bold text-[15px] uppercase tracking-[0.15em] text-fg transition-transform duration-300 hover:scale-105"
               >
                 <LiquidGlassLayers />
                 <span className="relative z-10">{t.hero.quote}</span>
@@ -140,7 +128,7 @@ export function Hero({ isLoaded }: HeroProps) {
             </motion.div>
 
             <motion.div
-              className="mt-14 grid grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto"
+              className="mt-16 grid grid-cols-3 gap-3 sm:gap-5 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease: EASE, delay: 0.36 }}
@@ -148,12 +136,12 @@ export function Hero({ isLoaded }: HeroProps) {
               {t.hero.stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-[var(--border-color)] bg-bg/40 backdrop-blur-md px-3 py-5 sm:px-5 sm:py-6 flex flex-col items-center gap-1"
+                  className="rounded-2xl border border-[var(--border-color)] bg-bg/40 backdrop-blur-md px-4 py-7 sm:px-6 sm:py-10 flex flex-col items-center gap-2 transition-[border-color,background-color,box-shadow] duration-300 hover:border-[rgba(184,255,46,0.5)] hover:bg-bg/60 hover:shadow-[0_0_45px_-10px_rgba(184,255,46,0.4)]"
                 >
-                  <span className="font-sans font-black text-[clamp(1.5rem,4vw,2.5rem)] leading-none text-accent tabular-nums">
+                  <span className="font-sans font-black text-[clamp(2.25rem,6vw,4.5rem)] leading-none text-accent tabular-nums">
                     <CountUp value={stat.value} suffix="+" start={show} />
                   </span>
-                  <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.12em] text-muted-fg text-center leading-tight">
+                  <span className="font-mono text-[9px] sm:text-[12px] uppercase tracking-[0.12em] text-muted-fg text-center leading-tight">
                     {stat.label}
                   </span>
                 </div>

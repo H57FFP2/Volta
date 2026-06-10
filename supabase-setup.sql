@@ -31,3 +31,24 @@ create policy "allow_anonymous_inserts"
   for insert
   to anon
   with check (true);
+
+-- ── Statut "lu" des demandes (pour le compteur de nouvelles demandes) ──
+alter table contact_requests add column if not exists read boolean default false;
+
+-- ── Statut de suivi de la demande (en cours, à rappeler, etc.) ──
+alter table contact_requests add column if not exists status text default 'nouveau';
+
+-- ── Suivi des visites du site ──────────────────────────────────
+create table if not exists site_visits (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now()
+);
+
+alter table site_visits enable row level security;
+
+-- Le site public (clé anon) ne peut qu'INSÉRER une visite.
+create policy "allow_anonymous_visit_inserts"
+  on site_visits
+  for insert
+  to anon
+  with check (true);
