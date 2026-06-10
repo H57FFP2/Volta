@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-
-function FloatingPaths({ position, animate, count }: { position: number; animate: boolean; count: number }) {
+// Tracés décoratifs STATIQUES (gelés) — aucune animation, coût CPU nul.
+function FloatingPaths({ position, count }: { position: number; count: number }) {
   const paths = Array.from({ length: count }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -19,50 +17,25 @@ function FloatingPaths({ position, animate, count }: { position: number; animate
   return (
     <div className="absolute inset-0 pointer-events-none">
       <svg className="w-full h-full" style={{ color: "var(--accent)" }} viewBox="0 0 696 316" fill="none">
-        {paths.map((path) =>
-          animate ? (
-            <motion.path
-              key={path.id}
-              d={path.d}
-              stroke="currentColor"
-              strokeWidth={path.width}
-              strokeOpacity={0.1 + path.id * 0.03}
-              initial={{ pathLength: 0.3, opacity: 0.6 }}
-              animate={{ pathLength: 1, opacity: [0.3, 0.6, 0.3], pathOffset: [0, 1, 0] }}
-              transition={{ duration: 20 + Math.random() * 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-          ) : (
-            <path
-              key={path.id}
-              d={path.d}
-              stroke="currentColor"
-              strokeWidth={path.width}
-              strokeOpacity={0.08 + path.id * 0.025}
-            />
-          )
-        )}
+        {paths.map((path) => (
+          <path
+            key={path.id}
+            d={path.d}
+            stroke="currentColor"
+            strokeWidth={path.width}
+            strokeOpacity={0.08 + path.id * 0.025}
+          />
+        ))}
       </svg>
     </div>
   );
 }
 
 export function BackgroundPaths({ className = "" }: { className?: string }) {
-  // Par défaut : statique + peu de tracés (sûr pour mobile / SSR).
-  // Animation complète seulement sur desktop performant.
-  const [animate, setAnimate] = useState(false);
-  useEffect(() => {
-    const okSize = window.matchMedia("(min-width: 768px)").matches;
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (okSize && finePointer && !reduced) setAnimate(true);
-  }, []);
-
-  const count = animate ? 36 : 14;
-
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`} aria-hidden>
-      <FloatingPaths position={1} animate={animate} count={count} />
-      <FloatingPaths position={-1} animate={animate} count={count} />
+      <FloatingPaths position={1} count={24} />
+      <FloatingPaths position={-1} count={24} />
     </div>
   );
 }

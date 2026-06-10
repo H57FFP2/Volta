@@ -4,7 +4,6 @@ import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { useLang } from "@/lib/language-context";
 import { BackgroundPaths } from "@/components/ui/background-paths";
-import { Magnetic } from "@/components/ui/magnetic";
 
 export function Collaboration() {
   const { t } = useLang();
@@ -14,11 +13,14 @@ export function Collaboration() {
       {/* Shader de tracés animés en fond */}
       <BackgroundPaths className="opacity-30" />
 
-      <Magnetic strength={0.12} max={28} className="relative z-10 max-w-[88rem] mx-auto">
+      <div className="relative z-10 max-w-[88rem] mx-auto">
         {/* Box liquid glass (frost propre, sans distorsion bruitée) */}
         <div
-          className="relative rounded-[2.5rem] overflow-hidden border border-white/10"
-          style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.4)" }}
+          className="relative rounded-[2.5rem] overflow-hidden border border-white/10
+            shadow-[0_8px_40px_rgba(0,0,0,0.4)]
+            transition-all duration-300 ease-out
+            hover:-translate-y-1.5 hover:border-[rgba(184,255,46,0.45)]
+            hover:shadow-[0_26px_70px_rgba(0,0,0,0.55),0_0_55px_-12px_rgba(184,255,46,0.35)]"
         >
           {/* Couche translucide (sans backdrop-filter pour éviter le bug de
               superposition au-dessus des overlays fixes) */}
@@ -75,7 +77,7 @@ export function Collaboration() {
             </span>
           </a>
         </div>
-      </Magnetic>
+      </div>
     </section>
   );
 }

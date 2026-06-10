@@ -12,6 +12,7 @@ import { siteConfig } from "@/config/site";
 import { useLang } from "@/lib/language-context";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { CtaBanner } from "@/components/ui/CtaBanner";
 
 function ProjectThumb({ color, image, title }: { color: string; image?: string; title: string }) {
   if (image) {
@@ -167,6 +168,8 @@ export function Works() {
           </ScrollReveal>
         ))}
       </div>
+
+      <CtaBanner text={t.ctaBanner.works} />
     </section>
   );
 }

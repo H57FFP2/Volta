@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { CtaBanner } from "@/components/ui/CtaBanner";
 import { useLang } from "@/lib/language-context";
 
 export function Services() {
@@ -82,6 +83,8 @@ export function Services() {
           </li>
         ))}
       </ul>
+
+      <CtaBanner text={t.ctaBanner.services} />
     </section>
   );
 }

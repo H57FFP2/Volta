@@ -77,6 +77,7 @@ type Dict = {
   footer: { legal: string };
   nav: string[]; // même ordre que siteConfig.nav.links
   collab: { eyebrow: string; title: string };
+  ctaBanner: { works: string; services: string; button: string };
 };
 
 export const translations: Record<Lang, Dict> = {
@@ -213,6 +214,11 @@ export const translations: Record<Lang, Dict> = {
     footer: { legal: "Tous droits réservés." },
     nav: ["Pourquoi nous", "Travaux", "Services", "Processus", "Contact"],
     collab: { eyebrow: "Collaboration", title: "En collaboration avec" },
+    ctaBanner: {
+      works: "Envie d'un site qui marque les esprits ?",
+      services: "Prêt à donner vie à votre projet ?",
+      button: "Faire un devis gratuit",
+    },
   },
 
   en: {
@@ -348,5 +354,10 @@ export const translations: Record<Lang, Dict> = {
     footer: { legal: "All rights reserved." },
     nav: ["Why us", "Work", "Services", "Process", "Contact"],
     collab: { eyebrow: "Collaboration", title: "In collaboration with" },
+    ctaBanner: {
+      works: "Want a site that turns heads?",
+      services: "Ready to bring your project to life?",
+      button: "Get a free quote",
+    },
   },
 };
