@@ -84,7 +84,7 @@ export function Hero({ isLoaded }: HeroProps) {
           <div className="mx-auto max-w-4xl text-center">
 
             <motion.h1
-              className="mb-8 font-sans font-black text-[clamp(3.25rem,11vw,10.5rem)] leading-[0.92] tracking-tight text-fg text-balance"
+              className="mb-8 font-sans font-black text-[clamp(2.4rem,6vw,5rem)] leading-[0.95] tracking-tight text-fg text-balance"
               initial={{ opacity: 0, y: 28 }}
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 0.08 }}
