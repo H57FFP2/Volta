@@ -48,7 +48,7 @@ export function Hero({ isLoaded }: HeroProps) {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-bg">
+    <section className="relative min-h-[78vh] w-full overflow-hidden bg-bg">
       {/* Fond */}
       <div className="absolute inset-0 z-0">
         {useBeams ? (
@@ -79,7 +79,7 @@ export function Hero({ isLoaded }: HeroProps) {
       <div className="absolute inset-0 z-[1] bg-gradient-to-t from-bg via-bg/30 to-bg/50 pointer-events-none" />
 
       {/* Contenu */}
-      <div className="relative z-10 flex min-h-screen items-center">
+      <div className="relative z-10 flex min-h-[78vh] items-center py-20">
         <div className="mx-auto max-w-5xl px-6 lg:px-8 w-full">
           <div className="mx-auto max-w-4xl text-center">
 
