@@ -14,7 +14,7 @@ export function Collaboration() {
       <BackgroundPaths className="opacity-30" />
 
       <div className="relative z-10 max-w-[88rem] mx-auto">
-        {/* Box liquid glass (frost propre, sans distorsion bruitée) */}
+        {/* Box liquid glass (frost propre, sans distorsion bruitée et bien mieux que avant) */}
         <div
           className="relative rounded-[2.5rem] overflow-hidden border border-white/10
             shadow-[0_8px_40px_rgba(0,0,0,0.4)]
