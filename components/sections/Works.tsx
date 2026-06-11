@@ -20,7 +20,9 @@ function ProjectThumb({ color, image, title }: { color: string; image?: string; 
       <div className="absolute inset-0">
         <img
           src={image}
-          alt={title}
+          alt={`${title} — site web réalisé par VAULTAWEB`}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover"
         />
       </div>

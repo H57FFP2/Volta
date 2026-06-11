@@ -57,6 +57,8 @@ export function Collaboration() {
               <img
                 src="/Image_20260527_161138_911.png"
                 alt="VOKAI"
+                loading="lazy"
+                decoding="async"
                 className="h-32 sm:h-80 w-auto max-w-full"
               />
               {/* X */}
@@ -67,6 +69,8 @@ export function Collaboration() {
               <img
                 src="/VOLTAWEB/VOLTAWHITE2.png"
                 alt={siteConfig.studio.name}
+                loading="lazy"
+                decoding="async"
                 className="h-28 sm:h-72 w-auto max-w-full"
               />
             </div>

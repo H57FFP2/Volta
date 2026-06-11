@@ -15,7 +15,7 @@ import { Marquee } from "@/components/ui/Marquee";
 import { SectionFade } from "@/components/ui/SectionFade";
 import { useLang } from "@/lib/language-context";
 
-export default function HomePage() {
+export default function HomePageClient() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { t } = useLang();
 

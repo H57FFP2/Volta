@@ -35,8 +35,8 @@ function isValidPhone(raw: string): boolean {
   return /^\+?\d{8,15}$/.test(cleaned);
 }
 
-export default function ContactPage() {
-  const { t } = useLang();
+export default function ContactPageClient() {
+  const { t, lang } = useLang();
   const c = t.contactPage;
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -94,7 +94,7 @@ export default function ContactPage() {
     <>
       <main className="relative min-h-screen bg-bg px-6 md:px-10 py-12 md:py-20">
         <Link
-          href="/"
+          href={`/${lang}`}
           className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-fg hover:text-fg transition-colors duration-200 mb-16"
         >
           <ArrowLeft className="w-4 h-4" />

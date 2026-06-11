@@ -6,7 +6,7 @@ import { useLang } from "@/lib/language-context";
 import { BackToTop } from "@/components/layout/BackToTop";
 
 export function Footer() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <footer className="relative border-t border-[var(--border-color)] px-6 md:px-10 pt-16 pb-32 md:pb-20">
       <div className="max-w-6xl mx-auto">
@@ -15,6 +15,8 @@ export function Footer() {
           <img
             src="/VOLTAWEB/VOLTAWHITE2.png"
             alt={siteConfig.studio.name}
+            loading="lazy"
+            decoding="async"
             className="h-16 md:h-20 w-auto opacity-50"
           />
           <div className="flex items-center gap-3 shrink-0">
@@ -30,7 +32,7 @@ export function Footer() {
             {siteConfig.nav.links.map((link, i) => (
               <a
                 key={link.href}
-                href={`/${link.href}`}
+                href={`/${lang}${link.href}`}
                 className="font-sans text-[14px] font-semibold uppercase tracking-[0.1em] text-muted-fg hover:text-accent transition-colors duration-200"
               >
                 {t.nav[i] ?? link.label}

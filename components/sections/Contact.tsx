@@ -9,7 +9,7 @@ import { useLang } from "@/lib/language-context";
 export function Contact() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   const words = t.contact.headline.split(" ");
 
@@ -79,7 +79,7 @@ export function Contact() {
         transition={{ delay: 0.75, duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
       >
         <Link
-          href={siteConfig.contact.ctaHref}
+          href={`/${lang}${siteConfig.contact.ctaHref}`}
           className="group inline-flex items-center gap-4 bg-accent text-bg px-8 py-5 rounded-full font-sans font-bold text-[14px] uppercase tracking-[0.15em] hover:bg-fg transition-colors duration-300"
         >
           {t.contact.cta}

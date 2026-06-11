@@ -78,6 +78,10 @@ type Dict = {
   nav: string[]; // même ordre que siteConfig.nav.links
   collab: { eyebrow: string; title: string };
   ctaBanner: { works: string; services: string; button: string };
+  seo: {
+    home: { title: string; description: string };
+    contact: { title: string; description: string };
+  };
 };
 
 export const translations: Record<Lang, Dict> = {
@@ -219,6 +223,18 @@ export const translations: Record<Lang, Dict> = {
       services: "Prêt à donner vie à votre projet ?",
       button: "Faire un devis gratuit",
     },
+    seo: {
+      home: {
+        title: "VAULTAWEB — Création de site web premium à Montréal",
+        description:
+          "Studio de création web haut de gamme à Montréal. Sites sur-mesure, design premium, développement Next.js, SEO et performance. Devis gratuit sous 24h.",
+      },
+      contact: {
+        title: "Contact — Devis gratuit",
+        description:
+          "Parlez-nous de votre projet web. Réponse sous 24h avec les prix les plus compétitifs du marché. Studio VAULTAWEB, Montréal.",
+      },
+    },
   },
 
   en: {
@@ -358,6 +374,18 @@ export const translations: Record<Lang, Dict> = {
       works: "Want a site that turns heads?",
       services: "Ready to bring your project to life?",
       button: "Get a free quote",
+    },
+    seo: {
+      home: {
+        title: "VAULTAWEB — Premium Web Design Studio in Montreal",
+        description:
+          "High-end web design studio in Montreal. Custom websites, premium design, Next.js development, SEO and performance. Free quote within 24h.",
+      },
+      contact: {
+        title: "Contact — Free Quote",
+        description:
+          "Tell us about your web project. We reply within 24h with the most competitive prices on the market. VAULTAWEB studio, Montreal.",
+      },
     },
   },
 };

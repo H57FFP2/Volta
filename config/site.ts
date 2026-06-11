@@ -8,6 +8,7 @@ export const siteConfig = {
     email: "vaultaweb@gmail.com",
     location: "Montréal, Canada",
     year: "2026",
+    url: "https://www.vaultaweb.com",
   },
 
   nav: {

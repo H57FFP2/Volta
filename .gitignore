@@ -6,8 +6,14 @@
 /out
 
 # variables d'environnement (SECRÈTES — ne jamais commiter)
+# Ignore TOUS les .env (y compris .env.production / .env.development),
+# sauf le template d'exemple volontairement versionné.
 .env
-.env*.local
+.env.*
+!.env.local.example
+
+# infos de build TypeScript
+*.tsbuildinfo
 
 # logs
 npm-debug.log*
