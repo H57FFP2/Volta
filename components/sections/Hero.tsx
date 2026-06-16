@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLang } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { TransitionLink } from "@/components/ui/TransitionLink";
@@ -9,25 +9,6 @@ import { LiquidGlassLayers, GlassFilter } from "@/components/ui/liquid-glass-but
 import Beams from "@/components/ui/ethereal-beams";
 
 const EASE = [0.33, 1, 0.68, 1] as const;
-
-function CountUp({ value, suffix, start }: { value: number; suffix?: string; start: boolean }) {
-  const [display, setDisplay] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    const controls = animate(0, value, {
-      duration: 1.8,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => setDisplay(Math.round(v)),
-    });
-    return () => controls.stop();
-  }, [start, value]);
-  return (
-    <>
-      {display}
-      {suffix}
-    </>
-  );
-}
 
 interface HeroProps {
   isLoaded: boolean;
@@ -125,27 +106,6 @@ export function Hero({ isLoaded }: HeroProps) {
                 <span className="relative z-10">{t.hero.quote}</span>
                 <GlassFilter />
               </TransitionLink>
-            </motion.div>
-
-            <motion.div
-              className="mt-16 grid grid-cols-3 gap-3 sm:gap-5 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={show ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.36 }}
-            >
-              {t.hero.stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-2xl border border-[var(--border-color)] bg-bg/40 backdrop-blur-md px-4 py-7 sm:px-6 sm:py-10 flex flex-col items-center gap-2 transition-[border-color,background-color,box-shadow] duration-300 hover:border-[rgba(184,255,46,0.5)] hover:bg-bg/60 hover:shadow-[0_0_45px_-10px_rgba(184,255,46,0.4)]"
-                >
-                  <span className="font-sans font-black text-[clamp(2.25rem,6vw,4.5rem)] leading-none text-accent tabular-nums">
-                    <CountUp value={stat.value} suffix="+" start={show} />
-                  </span>
-                  <span className="font-mono text-[9px] sm:text-[12px] uppercase tracking-[0.12em] text-muted-fg text-center leading-tight">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
             </motion.div>
           </div>
         </div>

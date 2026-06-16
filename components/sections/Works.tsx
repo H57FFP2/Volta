@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  animate,
+  useInView,
   useMotionValue,
   useSpring,
   useTransform,
@@ -48,6 +50,54 @@ function ProjectThumb({ color, image, title }: { color: string; image?: string; 
 const EASE        = [0.33, 1, 0.68, 1] as const;
 const MAX_DEG     = 5;
 const SPRING_CFG  = { stiffness: 280, damping: 26, mass: 0.5 };
+
+function CountUp({ value, suffix, start }: { value: number; suffix?: string; start: boolean }) {
+  const [display, setDisplay] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    const controls = animate(0, value, {
+      duration: 1.8,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [start, value]);
+  return (
+    <>
+      {display}
+      {suffix}
+    </>
+  );
+}
+
+function WorksStats() {
+  const { t } = useLang();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
+  return (
+    <motion.div
+      ref={ref}
+      className="mb-16 md:mb-20 grid grid-cols-3 gap-3 sm:gap-5 max-w-3xl mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: EASE }}
+    >
+      {t.hero.stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="rounded-2xl border border-[var(--border-color)] bg-bg/40 backdrop-blur-md px-4 py-7 sm:px-6 sm:py-10 flex flex-col items-center gap-2 transition-[border-color,background-color,box-shadow] duration-300 hover:border-[rgba(184,255,46,0.5)] hover:bg-bg/60 hover:shadow-[0_0_45px_-10px_rgba(184,255,46,0.4)]"
+        >
+          <span className="font-sans font-black text-[clamp(2.25rem,6vw,4.5rem)] leading-none text-accent tabular-nums">
+            <CountUp value={stat.value} suffix="+" start={inView} />
+          </span>
+          <span className="font-mono text-[9px] sm:text-[12px] uppercase tracking-[0.12em] text-muted-fg text-center leading-tight">
+            {stat.label}
+          </span>
+        </div>
+      ))}
+    </motion.div>
+  );
+}
 
 function WorkCard({
   project,
@@ -162,6 +212,8 @@ export function Works() {
           {t.works.title}
         </TextReveal>
       </div>
+
+      <WorksStats />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
         {siteConfig.works.map((project, i) => (
