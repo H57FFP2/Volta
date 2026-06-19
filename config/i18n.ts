@@ -95,9 +95,9 @@ export const translations: Record<Lang, Dict> = {
       quote: "Faire un devis gratuit",
       quoteLabel: "Devis",
       stats: [
-        { value: 400, label: "Projets réalisés" },
-        { value: 220, label: "Refontes" },
-        { value: 130, label: "Automatisations" },
+        { value: 230, label: "Projets réalisés" },
+        { value: 200, label: "Refontes" },
+        { value: 100, label: "Automatisations" },
       ],
     },
     why: {
@@ -247,9 +247,9 @@ export const translations: Record<Lang, Dict> = {
       quote: "Get a free quote",
       quoteLabel: "Quote",
       stats: [
-        { value: 400, label: "Projects delivered" },
-        { value: 220, label: "Redesigns" },
-        { value: 130, label: "Automations" },
+        { value: 230, label: "Projects delivered" },
+        { value: 200, label: "Redesigns" },
+        { value: 100, label: "Automations" },
       ],
     },
     why: {
