@@ -1,148 +1,65 @@
 "use client";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  useCarousel,
-} from "@/components/ui/carousel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { PenTool, Gauge, LifeBuoy, BadgePercent, Sparkles } from "lucide-react";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useLang } from "@/lib/language-context";
-import { cn } from "@/lib/utils";
 
-const COLORS = ["#16321f", "#20422a", "#2a5436", "#356643", "#427e52"];
-
-function WhyUsNavigation() {
-  const { index, itemsCount, setIndex } = useCarousel();
-  const atStart = index === 0;
-  const atEnd = index + 1 === itemsCount;
-
-  const buttonClass =
-    "pointer-events-auto flex h-14 w-14 md:h-16 md:w-16 lg:h-[4.5rem] lg:w-[4.5rem] items-center justify-center rounded-full " +
-    "border border-accent bg-bg/80 text-accent backdrop-blur-sm " +
-    "transition-colors duration-300 ease-out " +
-    "hover:bg-accent hover:text-bg " +
-    "disabled:cursor-not-allowed disabled:border-fg/20 disabled:bg-bg/40 disabled:text-fg/30 disabled:hover:bg-bg/40 disabled:hover:text-fg/30";
-
-  return (
-    <>
-      <button
-        type="button"
-        aria-label="Slide précédent"
-        disabled={atStart}
-        onClick={() => !atStart && setIndex(index - 1)}
-        className={cn(
-          buttonClass,
-          "absolute top-1/2 z-20 -translate-y-1/2 -left-14 md:-left-16 lg:-left-20"
-        )}
-      >
-        <ChevronLeft className="h-7 w-7 md:h-9 md:w-9" strokeWidth={2.5} />
-      </button>
-      <button
-        type="button"
-        aria-label="Slide suivant"
-        disabled={atEnd}
-        onClick={() => !atEnd && setIndex(index + 1)}
-        className={cn(
-          buttonClass,
-          "absolute top-1/2 z-20 -translate-y-1/2 -right-14 md:-right-16 lg:-right-20"
-        )}
-      >
-        <ChevronRight className="h-7 w-7 md:h-9 md:w-9" strokeWidth={2.5} />
-      </button>
-    </>
-  );
-}
-
-function WhyUsIndicator() {
-  const { index, itemsCount, setIndex } = useCarousel();
-  return (
-    <div className="absolute -bottom-14 z-10 flex w-full items-center justify-center">
-      <div className="flex space-x-3">
-        {Array.from({ length: itemsCount }, (_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`Aller au slide ${i + 1}`}
-            onClick={() => setIndex(i)}
-            className={cn(
-              "h-2.5 rounded-full transition-all duration-300",
-              index === i ? "w-8 bg-accent" : "w-2.5 bg-fg/30 hover:bg-fg/60"
-            )}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+const ICONS = [PenTool, Gauge, LifeBuoy, BadgePercent, Sparkles];
 
 export function WhyUs() {
   const { t } = useLang();
 
-  const reasons = t.why.reasons.map((r, i) => ({
-    ...r,
-    color: COLORS[i % COLORS.length],
-  }));
-
   return (
-    <section id="why-us" className="relative bg-bg">
-      <div className="px-6 md:px-10 pt-24 md:pt-36 pb-12 md:pb-20">
-        <TextReveal
-          as="h2"
-          className="font-sans font-black text-[clamp(3rem,8vw,7.5rem)] leading-none text-fg"
-        >
-          {t.why.title}
-        </TextReveal>
-      </div>
+    <section
+      id="why-us"
+      className="relative bg-bg px-6 md:px-10 py-24 md:py-36 border-t border-[var(--border-color)]"
+    >
+      <div className="mx-auto w-full max-w-[88rem]">
+        <div className="mb-16 md:mb-24 max-w-3xl">
+          <TextReveal
+            as="h2"
+            className="font-sans font-black text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] text-fg"
+          >
+            {t.why.title}
+          </TextReveal>
+        </div>
 
-      <div className="px-6 md:px-10 pb-32 md:pb-44">
-        <div className="relative mx-auto w-full max-w-[88rem] px-14 md:px-16 lg:px-24">
-          <Carousel>
-            <CarouselContent>
-              {reasons.map((reason) => (
-                <CarouselItem key={reason.index} className="px-2 md:px-4">
-                  <div
-                    className="relative flex h-[560px] md:h-[680px] lg:h-[740px] w-full flex-col justify-between overflow-hidden rounded-[2rem] p-10 md:p-20"
-                    style={{ backgroundColor: reason.color, color: "#ede8da" }}
-                  >
-                    <img
-                      src="/VOLTAWEB/VOLTAWHITE2.png"
-                      alt=""
-                      aria-hidden
-                      className="pointer-events-none absolute -right-8 -bottom-10 h-auto w-[clamp(20rem,40vw,36rem)] select-none"
-                      style={{ opacity: 0.06 }}
+        <div className="grid grid-cols-1 gap-px border-t border-[var(--border-color)] bg-[var(--border-color)] sm:grid-cols-2 lg:grid-cols-5">
+          {t.why.reasons.map((reason, i) => {
+            const Icon = ICONS[i % ICONS.length];
+            return (
+              <div
+                key={reason.index}
+                className="group relative overflow-hidden bg-bg transition-colors duration-500 hover:bg-[var(--muted)]"
+              >
+                <ScrollReveal
+                  delay={i * 0.08}
+                  distance={28}
+                  className="flex h-full flex-col px-6 py-8 sm:px-8 sm:py-12 lg:px-8 lg:py-16"
+                >
+                  <div className="mb-6 flex items-start justify-between sm:mb-12 md:mb-16">
+                    <Icon
+                      className="h-9 w-9 text-fg/85 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-hover:text-accent sm:h-11 sm:w-11"
+                      strokeWidth={1.25}
                     />
-
-                    <div className="relative z-10 flex items-center gap-5">
-                      <span className="font-mono text-[15px] tracking-[0.3em]">
-                        {reason.index}
-                      </span>
-                      <span
-                        className="h-px w-16"
-                        style={{ backgroundColor: "#ede8da", opacity: 0.4 }}
-                      />
-                    </div>
-
-                    <div className="relative z-10 max-w-3xl">
-                      <h3 className="mb-6 font-sans font-black text-[clamp(2.4rem,5vw,4.25rem)] leading-[1.02] tracking-tight">
-                        {reason.title}
-                      </h3>
-                      <p
-                        className="font-sans text-[18px] leading-relaxed md:text-[22px]"
-                        style={{ opacity: 0.85 }}
-                      >
-                        {reason.description}
-                      </p>
-                    </div>
+                    <span className="select-none font-sans font-black leading-none text-[clamp(3rem,6vw,5rem)] text-[rgba(237,232,218,0.08)] transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:text-[rgba(184,255,46,0.22)]">
+                      {reason.index}
+                    </span>
                   </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
 
-            <WhyUsNavigation />
-            <WhyUsIndicator />
-          </Carousel>
+                  <h3 className="mb-4 font-sans font-bold leading-[1.15] text-fg transition-colors duration-300 group-hover:text-accent text-[clamp(1.4rem,1.8vw,1.75rem)] sm:min-h-[3.45em]">
+                    {reason.title}
+                  </h3>
+                  <p className="font-sans text-[clamp(0.95rem,1vw,1.0625rem)] leading-relaxed text-muted-fg transition-colors duration-300 group-hover:text-fg/75">
+                    {reason.description}
+                  </p>
+                </ScrollReveal>
+
+                <span className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-0 bg-accent transition-all duration-500 ease-out group-hover:w-full" />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
